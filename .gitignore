@@ -3,6 +3,7 @@
 
 ### Symfony ###
 # Cache and logs (Symfony2)
+.env.dev
 /app/cache/*
 /app/logs/*
 !app/cache/.gitkeep
