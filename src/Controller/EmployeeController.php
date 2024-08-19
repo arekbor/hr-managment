@@ -16,6 +16,9 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/employee')]
 class EmployeeController extends AbstractController
 {
+    public function __construct(private EntityManagerInterface $em) {
+    }
+
     #[Route('/')]
     public function index(
         Request $request,
@@ -34,11 +37,30 @@ class EmployeeController extends AbstractController
         ]);
     }
 
+    #[Route('/add')]
+    public function add(Request $request): Response
+    {
+        $employee = new Employee();
+        
+        $form = $this->createForm(EmployeeType::class, $employee);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($employee);
+            $this->em->flush();
+
+            return $this->redirectToRoute('app_employee_index');
+        }
+
+        return $this->render('employee/add.html.twig', [
+            'form' => $form
+        ]);
+    }
+
     #[Route('/details/{id}')]
     public function details(
         Request $request,
         Employee $employee,
-        EntityManagerInterface $em,
         Security $security
     ): Response
     {
@@ -49,8 +71,8 @@ class EmployeeController extends AbstractController
             $form->handleRequest($request);
 
             if($form->isSubmitted() && $form->isValid()) {
-                $em->persist($employee);
-                $em->flush();
+                $this->em->persist($employee);
+                $this->em->flush();
 
                 return $this->redirectToRoute('app_employee_index');
             }

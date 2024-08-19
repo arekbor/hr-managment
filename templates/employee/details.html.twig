@@ -55,27 +55,11 @@
     {{ parent() }}
 
     {% if is_granted('ROLE_ADMIN') %}
-        <script>
-            $('.select-entity').each(function() {
-                const config = {
-                    allowClear: true,
-                    width:'resolve',
-                    ajax: {
-                        data: function (params) {
-                            return {name: params.term};
-                        },
-                        dataType:'json',delay: 500,
-                        processResults: function (data) {
-                            const dataresults = [];
-                            $.each(data, function(key, val){
-                                dataresults.push({id: val['id'], text: val['name']});
-                            });
-                            return { results: dataresults };
-                        }
-                    }
-                };
+        <script type="text/javascript" src="{{ asset('js/select2Employee.js') }}"></script>
 
-                $(this).select2(config);
+        <script>
+            $(document).ready(function() {
+                initEmployeeSelect2('.select-entity');
             })
         </script>
     {% endif %}
