@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ app_name }} - Details position{% endblock %}
+
+{% block body %}
+    <div class="card my-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Position information</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>ID:</strong> {{ position.id }}
+                </li> 
+                <li class="list-group-item">
+                    <strong>Name:</strong> {{ position.name }}
+                </li> 
+                <li class="list-group-item">
+                    <strong>Assigned employyes:</strong> {{ position.employees|length }}
+                </li> 
+            </ul>
+        </div>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="card my-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Edit position</h5>
+            </div>
+            <div class="card-body">
+                {{ form(editForm) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

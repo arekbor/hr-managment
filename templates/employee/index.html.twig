@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ app_name }} - Employees{% endblock %}
+
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'Id', 'e.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'First name', 'e.firstname') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Last name', 'e.lastname') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Email', 'e.email') }}</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in pagination %}
+                <tr>
+                    <td>{{employee.id}}</td>
+                    <td>{{employee.firstname}}</td>
+                    <td>{{employee.lastname}}</td>
+                    <td>{{employee.email}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a 
+                                href="{{ path('app_employee_details', { id: employee.id }) }}" 
+                                class="btn btn-primary btn-sm"
+                            >
+                                Details
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

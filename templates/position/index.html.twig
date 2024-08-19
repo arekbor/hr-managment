@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ app_name }} - Positions{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a 
+            href="{{ path('app_position_create') }}"
+            class="btn btn-info btn-sm"
+        >
+            Create new position
+        </a> 
+    {% endif %}
+
+    <table class="table table-striped mt-2">
+        <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'Id', 'p.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Name', 'p.name') }}</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for position in pagination %}
+                <tr>
+                    <td>{{position.id}}</td>
+                    <td>{{position.name}} <span class="badge badge-warning">{{position.employees|length}}</span>
+                    </td>
+                    <td>
+                        <a 
+                            href="{{ path('app_position_details', { id: position.id }) }}" 
+                            class="btn btn-primary btn-sm"
+                        >
+                            Details
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>  
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination, null, {}, pagination_render_settings) }}
+    </div>
+{% endblock %}

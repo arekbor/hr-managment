@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ app_name }} - Login{% endblock %}
+
+{% block body %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="text-center">
+            You are already logged as
+            <p class="text-info">{{ app.user.email }}</p>
+        </div>
+    {% else %}
+        {{ form(form) }}
+        {% set error = last_authentication_error.getLastAuthenticationError() %}
+        {% if error %}
+            <div class="text-danger">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        <div>
+            If you already have an account
+            <a href="{{ path('app_auth_register') }}">sign in</a>
+        </div>
+    {% endif %}
+{% endblock %}

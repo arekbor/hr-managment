@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ app_name }} - Register{% endblock %}
+
+{% block body %}
+    {{ form(form) }}
+
+    <div>
+        Already have an account?
+        <a href="{{ path('app_auth_login') }}">log in</a>
+    </div>
+{% endblock %}

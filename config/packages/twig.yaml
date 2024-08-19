@@ -1,0 +1,12 @@
+twig:
+  file_name_pattern: "*.twig"
+  form_themes: ["bootstrap_4_layout.html.twig"]
+  globals:
+    app_name: "HR Managment"
+    last_authentication_error: "@security.authentication_utils"
+    pagination_render_settings:
+      { "align": "center", "size": "small", "rounded": true }
+
+when@test:
+  twig:
+    strict_variables: true

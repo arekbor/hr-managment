@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ app_name }} - Details employee{% endblock %}
+
+{% block body %}
+    <div class="card my-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Employee information</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>ID:</strong> {{ employee.id }}
+                </li>
+                <li class="list-group-item">
+                    <strong>First Name:</strong> {{ employee.firstname }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Last Name:</strong> {{ employee.lastname }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Email:</strong> {{ employee.email }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Positions:</strong>
+                    <ul class="list-group mt-2">
+                        {% for position in employee.positions %}
+                            <li class="list-group-item list-group-item-action">
+                                {{ position.name }}
+                            </li>  
+                        {% else %}
+                            <li class="list-group-item text-muted">
+                                No positions assigned.
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="card my-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Edit employee</h5>
+            </div>
+            <div class="card-body">
+                {{ form(editForm) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <script>
+            $('.select-entity').each(function() {
+                const config = {
+                    allowClear: true,
+                    width:'resolve',
+                    ajax: {
+                        data: function (params) {
+                            return {name: params.term};
+                        },
+                        dataType:'json',delay: 500,
+                        processResults: function (data) {
+                            const dataresults = [];
+                            $.each(data, function(key, val){
+                                dataresults.push({id: val['id'], text: val['name']});
+                            });
+                            return { results: dataresults };
+                        }
+                    }
+                };
+
+                $(this).select2(config);
+            })
+        </script>
+    {% endif %}
+    
+{% endblock %}
